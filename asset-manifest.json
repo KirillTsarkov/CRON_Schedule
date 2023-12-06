@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/CRON_Schedule/static/css/main.5e31383d.css",
+    "main.js": "/CRON_Schedule/static/js/main.ed8e67eb.js",
+    "index.html": "/CRON_Schedule/index.html",
+    "main.5e31383d.css.map": "/CRON_Schedule/static/css/main.5e31383d.css.map",
+    "main.ed8e67eb.js.map": "/CRON_Schedule/static/js/main.ed8e67eb.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5e31383d.css",
+    "static/js/main.ed8e67eb.js"
+  ]
+}
