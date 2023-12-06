@@ -1,16 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;600&display=swap');
+
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
 }
 
 .App-header {
@@ -21,18 +12,39 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: rgb(255, 255, 255);
+  font-family: 'Roboto Condensed', sans-serif;
+
 }
 
-.App-link {
-  color: #61dafb;
+
+.header {
+  background-color: blanchedalmond;
+  padding: 25px 100px;
+  font-weight: 600;
+  font-family: 'Roboto Condensed', sans-serif;
+  color: rgb(10, 18, 15);
+  font-size: large;
+
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.choose-label{
+  margin-left: 50px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-right: 10px;
+  align-items: center;
+}
+
+.main-body {
+  padding: 40px;
+}
+
+.inline-string{
+  display: inline-block ; 
+}
+
+.custom-button{
+  margin: 20px;
+  width: 100px;
 }
