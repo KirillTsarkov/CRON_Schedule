@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/CRON_Schedule/static/css/main.5e31383d.css",
-    "main.js": "/CRON_Schedule/static/js/main.b4f7f269.js",
+    "main.js": "/CRON_Schedule/static/js/main.b7e07d8f.js",
     "index.html": "/CRON_Schedule/index.html",
     "main.5e31383d.css.map": "/CRON_Schedule/static/css/main.5e31383d.css.map",
-    "main.b4f7f269.js.map": "/CRON_Schedule/static/js/main.b4f7f269.js.map"
+    "main.b7e07d8f.js.map": "/CRON_Schedule/static/js/main.b7e07d8f.js.map"
   },
   "entrypoints": [
     "static/css/main.5e31383d.css",
-    "static/js/main.b4f7f269.js"
+    "static/js/main.b7e07d8f.js"
   ]
 }
