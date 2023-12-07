@@ -1,6 +1,16 @@
 ﻿import React, { useState } from 'react';
 import '../App.css';
 
+const getPluralEnding = (number) => {
+    if (number % 10 === 1 && number % 100 !== 11) {
+        return 'у';
+    } else if ([2, 3, 4].includes(number % 10) && ![12, 13, 14].includes(number % 100)) {
+        return 'ы';
+    } else {
+        return '';
+    }
+};
+
 const MinuteSelector = ({selectedMinute, onSelectedMinute}) => {
 
     const handleMinuteChange = (e) => {
@@ -18,12 +28,7 @@ const MinuteSelector = ({selectedMinute, onSelectedMinute}) => {
                         <option key={minute} value={minute}>{minute}</option>
                     ))}
                 </select>
-                {selectedMinute !== '*' && <p className="inline-string">{
-                    `минут${(selectedMinute === '1' || selectedMinute === '21'|| selectedMinute === '31' || selectedMinute === '41'|| selectedMinute === '51')
-                        ? 'у' : (selectedMinute === '2' || selectedMinute === '3'|| selectedMinute === '4' || selectedMinute === '22' || selectedMinute === '23'
-                            || selectedMinute === '24' || selectedMinute === '32' || selectedMinute === '33'|| selectedMinute === '34'|| selectedMinute === '42'
-                            || selectedMinute === '43'|| selectedMinute === '44'|| selectedMinute === '52'|| selectedMinute === '53'|| selectedMinute === '54')
-                        ? 'ы' : ''}`}</p>}
+                {selectedMinute !== '*' && <p className="inline-string">минут{getPluralEnding(selectedMinute)}</p>}
             </label>
         </div>
     );

@@ -1,6 +1,16 @@
 ﻿import React, { useState } from 'react';
 import '../App.css';
 
+const getPluralEnding = (number) => {
+    if (number % 10 === 1 && number % 100 !== 11) {
+        return '';
+    } else if ([2, 3, 4].includes(number % 10) && ![12, 13, 14].includes(number % 100)) {
+        return 'а';
+    } else {
+        return 'ов';
+    }
+};
+
 const HourSelector = ({selectedHour, onSelectedHour}) => {
 
     const handleHourChange = (e) => {
@@ -18,10 +28,7 @@ const HourSelector = ({selectedHour, onSelectedHour}) => {
                         <option key={hour} value={hour}>{hour}</option>
                     ))}
                 </select>
-                {selectedHour !== '*' && <p className="inline-string">{
-                    `час${(selectedHour === '1' || selectedHour === '21') 
-                    ? '' : (selectedHour === '2' || selectedHour === '3'|| selectedHour === '4' || selectedHour === '22' || selectedHour === '23') 
-                    ? 'а' : 'ов'}`}</p>} 
+                {selectedHour !== '*' && <p className="inline-string">час{getPluralEnding(selectedHour)}</p>} 
             </label>
         </div>
     );

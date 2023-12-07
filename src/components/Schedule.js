@@ -8,72 +8,119 @@ import MinuteSelector from "./MinuteSelector";
 import CronParser from "./parseCronExpression";
 
 const Schedule = () => {
-    const [interval, setInterval] = useState(0);
-    const [selectedWeekDay, setSelectedWeekDay] = useState('*');
-    const [selectedMonth, setSelectedMonth] = useState('*');
-    const [selectedDay, setSelectedDay] = useState('*');
-    const [selectedHour, setSelectedHour] = useState('*');
-    const [selectedMinute, setSelectedMinute] = useState('0');
-    const [manualCronInput, setManualCronInput] = useState('');
-    const [cronExpression, setCronExpression] = useState(`${selectedHour === '*' ? interval : selectedMinute} ${selectedHour} ${selectedDay} ${selectedMonth} ${selectedWeekDay}`);
+    const [schedule, setSchedule] = useState({
+        interval: 0,
+        selectedWeekDay: '*',
+        selectedMonth: '*',
+        selectedDay: '*',
+        selectedHour: '*',
+        selectedMinute: '0',
+        manualCronInput: '',
+        cronExpression: "0 * * * *"
+    });
+
+    const { interval, selectedWeekDay, selectedMonth, selectedDay, selectedHour, selectedMinute, manualCronInput} = schedule;
+
+    const updateSchedule = (updatedFields) => {
+        setSchedule((prevSchedule) => ({
+            ...prevSchedule,
+            ...updatedFields,
+        }));
+    };
 
     const handleSelectWeekDay = (newSelectedWeekDay) => {
-        setSelectedWeekDay(newSelectedWeekDay);
+        updateSchedule({
+            selectedWeekDay: newSelectedWeekDay,
+        });
+
         const expressionPrefix = selectedHour === '*' ? '/' : '';
-        setCronExpression(`${expressionPrefix}${selectedHour === '*' ? interval : selectedMinute} ${selectedHour} ${selectedDay} ${selectedMonth} ${newSelectedWeekDay}`);
+        updateSchedule({
+            cronExpression: `${expressionPrefix}${selectedHour === '*' ? interval : selectedMinute} ${selectedHour} ${selectedDay} ${selectedMonth} ${newSelectedWeekDay}`,
+        });
     };
-    
+
     const handleSelectMonth = (newSelectedMonth) => {
-        setSelectedMonth(newSelectedMonth);
+        updateSchedule({
+            selectedMonth: newSelectedMonth,
+        });
+
         const prefix = selectedHour === '*' ? '/' : '';
-        setCronExpression(`${prefix}${selectedHour === '*' ? interval : selectedMinute} ${selectedHour} ${selectedDay} ${newSelectedMonth} ${selectedWeekDay}`);
+        updateSchedule({
+            cronExpression: `${prefix}${selectedHour === '*' ? interval : selectedMinute} ${selectedHour} ${selectedDay} ${newSelectedMonth} ${selectedWeekDay}`,
+        });
     };
-    
+
     const handleSelectDay = (newSelectedDay) => {
-        setSelectedDay(newSelectedDay);
+        updateSchedule({
+            selectedDay: newSelectedDay,
+        });
+
         const prefix = selectedHour === '*' ? '/' : '';
-        setCronExpression(`${prefix}${selectedHour === '*' ? interval : selectedMinute} ${selectedHour} ${newSelectedDay} ${selectedMonth} ${selectedWeekDay}`);
+        updateSchedule({
+            cronExpression: `${prefix}${selectedHour === '*' ? interval : selectedMinute} ${selectedHour} ${newSelectedDay} ${selectedMonth} ${selectedWeekDay}`,
+        });
     };
-    
+
     const handleSelectHour = (newSelectedHour) => {
-        setSelectedHour(newSelectedHour);
+        updateSchedule({
+            selectedHour: newSelectedHour,
+        });
+
         const prefix = newSelectedHour === '*' ? '/' : '';
-        setCronExpression(`${prefix}${newSelectedHour === '*' ? interval : selectedMinute} ${newSelectedHour} ${selectedDay} ${selectedMonth} ${selectedWeekDay}`);    
+        updateSchedule({
+            cronExpression: `${prefix}${newSelectedHour === '*' ? interval : selectedMinute} ${newSelectedHour} ${selectedDay} ${selectedMonth} ${selectedWeekDay}`,
+        });
     };
-    
+
     const handleSelectMinute = (newSelectedMinute) => {
-        setSelectedMinute(newSelectedMinute);
-        setCronExpression(`${newSelectedMinute} ${selectedHour} ${selectedDay} ${selectedMonth} ${selectedWeekDay}`);
+        updateSchedule({
+            selectedMinute: newSelectedMinute,
+        });
+
+        updateSchedule({
+            cronExpression: `${newSelectedMinute} ${selectedHour} ${selectedDay} ${selectedMonth} ${selectedWeekDay}`,
+        });
     };
 
     const handleIntervalChange = (newInterval) => {
-        setInterval(newInterval);
-        setCronExpression(`/${newInterval} ${selectedHour} ${selectedDay} ${selectedMonth} ${selectedWeekDay}`);
+        updateSchedule({
+            interval: newInterval,
+        });
+
+        updateSchedule({
+            cronExpression: `/${newInterval} ${selectedHour} ${selectedDay} ${selectedMonth} ${selectedWeekDay}`,
+        });
     };
 
     const handleManualInputChange = (e) => {
         const input = e.target.value;
-        setManualCronInput(input);
+        updateSchedule({
+            manualCronInput: input,
+        });
     };
 
     const handleLoad = () => {
         try {
-            const parsedCron = CronParser.parseExpression(manualCronInput);
+            const parsedCron = CronParser(manualCronInput);
+            updateSchedule({
+                selectedWeekDay: parsedCron.dayOfWeek,
+                selectedMonth: parsedCron.month,
+                selectedDay: parsedCron.dayOfMonth,
+                selectedHour: parsedCron.hour,
+                interval: parsedCron.minute,
+                selectedMinute: parsedCron.minute,
+                cronExpression: `${parsedCron.minute} ${parsedCron.hour} ${parsedCron.dayOfMonth} ${parsedCron.month} ${parsedCron.dayOfWeek}`,
+            });
             console.log('Разобранное вручную введенное cron-выражение:', parsedCron);
-            setSelectedWeekDay(parsedCron.dayOfWeek);
-            setSelectedMonth(parsedCron.month);
-            setSelectedDay(parsedCron.dayOfMonth);
-            setSelectedHour(parsedCron.hour);
-            setInterval(parsedCron.minute);
-            setSelectedMinute(parsedCron.minute)
-            setCronExpression(`${parsedCron.minute} ${parsedCron.hour} ${parsedCron.dayOfMonth} ${parsedCron.month} ${parsedCron.dayOfWeek}`)
         } catch (error) {
             console.error('Ошибка при распарсивании вручную введенного cron-выражения:', error.message);
         }
     };
 
     const handleSave = () => {
-        setManualCronInput(cronExpression);
+        updateSchedule({
+            manualCronInput: schedule.cronExpression,
+        });
     };
 
     return (
@@ -84,8 +131,8 @@ const Schedule = () => {
             <DaySelector selectedDay={selectedDay} onSelectedDay={handleSelectDay} />
             <WeekdaySelector selectedDay={selectedWeekDay} onSelectDay={handleSelectWeekDay} />
             <HourSelector selectedHour={selectedHour} onSelectedHour={handleSelectHour} />
-            {selectedHour !== '*' 
-                ? <MinuteSelector selectedMinute={selectedMinute} onSelectedMinute={handleSelectMinute} /> 
+            {selectedHour !== '*'
+                ? <MinuteSelector selectedMinute={selectedMinute} onSelectedMinute={handleSelectMinute} />
                 : <MinuteIntervalSchedule interval={interval} onIntervalChange={handleIntervalChange} />}
             <button className="custom-button" onClick={handleSave}>Save</button>
             <button className="custom-button" onClick={handleLoad}>Load</button>

@@ -3,14 +3,9 @@
 const MinuteIntervalSchedule = ({ interval, onIntervalChange }) => {
     const handleIntervalChange = (e) => {
         const newInterval = e.target.value;
-        onIntervalChange(newInterval);
 
-        if (newInterval >= 60) {
-            onIntervalChange(59);
-        } else if (newInterval<0) {
-            onIntervalChange(0);
-        }
-
+        const CheckedInterval = Math.min(59, Math.max(0, newInterval));
+        onIntervalChange(CheckedInterval);
     };
 
     return (
